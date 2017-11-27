@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAC-onomen", "MAC-onomen\MAC-onomen.csproj", "{09567932-C332-44F3-8216-58D8A22D6037}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAC_onomen", "MAC-onomen\MAC_onomen.csproj", "{09567932-C332-44F3-8216-58D8A22D6037}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MACmack", "MACmack\MACmack.csproj", "{95E5E548-9A09-4E45-B0F6-01FFF878D6CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MACmack", "MACmack\MACmack.csproj", "{95E5E548-9A09-4E45-B0F6-01FFF878D6CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
