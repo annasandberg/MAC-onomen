@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Sockets;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Security.Cryptography;
+using MAC_onomen.Models;
+using Newtonsoft.Json;
 
 namespace WebSocketServer
 {
-    using System.Net.Sockets;
-    using System.Net;
-    using System;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Security.Cryptography;
-    using System.Net.WebSockets;
-
     class Program
     {
         static NetworkStream stream;
@@ -86,8 +82,15 @@ namespace WebSocketServer
                 
                 if (data == "exit") break;
 
-                //beroende på om klient är kund el anställd så ska olika saker göras
-                ToClient(data);
+                //data är en beställning - skicka vidare till en el flera anställda
+                if (data.Contains("serviceTypes"))
+                {
+                    ServiceTypeViewModel order = JsonConvert.DeserializeObject<ServiceTypeViewModel>(data);
+                    Console.WriteLine(order.ServiceTypes.ToString());
+                    Console.WriteLine(order.Regnumber);
+                    ToClient(order.Regnumber);
+                }
+                ToClient(null);
             }
             stream.Close();
             client.Close();
@@ -95,7 +98,7 @@ namespace WebSocketServer
 
         static void ToClient(string input)
         {
-            var s = "Echo:" + input;
+            var s = "Inkommen beställning:" + input;
             var message = Encoding.UTF8.GetBytes(s);
             var send = new byte[message.Length + 2];
             send[0] = 0x81;
@@ -107,7 +110,7 @@ namespace WebSocketServer
 
             stream.Write(send, 0, send.Length);
 
-
+            
         }
 
     }
