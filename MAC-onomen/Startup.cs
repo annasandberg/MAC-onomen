@@ -32,7 +32,7 @@ namespace MAC_onomen
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseWebSockets();
             app.UseStaticFiles();
             app.UseMvc(routes =>
             {
