@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 using MAC_onomen.Models;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace WebSocketServer
 {
@@ -15,6 +17,8 @@ namespace WebSocketServer
         static NetworkStream stream;
         static Task task = new Task(() => FromClient());
         static TcpClient client;
+        static List<TcpClient> customers = new List<TcpClient>();
+        static List<TcpClient> employees = new List<TcpClient>();
 
         public static void Main()
         {
@@ -22,8 +26,25 @@ namespace WebSocketServer
             TcpListener server = new TcpListener(IPAddress.Parse("127.0.0.1"), 8000);
             server.Start();
             Console.WriteLine("Server has started on 127.0.0.1:8000.{0}Waiting for a connection...", Environment.NewLine);
-            client = server.AcceptTcpClient();
-            Console.WriteLine("A client connected.");
+
+            while (true) // Add exit flag here
+            {
+                client = server.AcceptTcpClient();
+                Console.WriteLine("A client connected.");
+                new Thread(() => HandleClient(client)).Start();
+            }
+        }
+
+        private static void HandleClient(object obj)
+        {
+            var client = (TcpClient)obj;
+            string clientIPAddress = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
+            var clientPort = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
+            //lägg till i en lista?
+            employees.Add(client);
+            customers.Add(client);
+
+            
             stream = client.GetStream();
 
             while (true)
@@ -50,8 +71,9 @@ namespace WebSocketServer
                         ) + Environment.NewLine
                         + Environment.NewLine);
 
-                    stream.Write(response, 0, response.Length); //Avsluta handskakningen
-                                                                // task.Start();
+                    stream.Write(response, 0, response.Length); 
+
+                    //ta emot data från kunder
                     FromClient();
                 }
                 else
@@ -60,7 +82,9 @@ namespace WebSocketServer
                 }
 
             }
+        
         }
+
         static void FromClient()
         {
             
@@ -69,36 +93,51 @@ namespace WebSocketServer
                 var bytes = new Byte[1024];
                 int rec = stream.Read(bytes, 0, 1024);  //Blocking
                 var length = bytes[1] - 128; //message length
-                Byte[] key = new Byte[4];
-                Array.Copy(bytes, 2, key, 0, key.Length);
-                byte[] encoded = new Byte[length];
-                byte[] decoded = new Byte[length];
-                Array.Copy(bytes, 6, encoded, 0, encoded.Length);
-                for (int i = 0; i < encoded.Length; i++)
-                {
-                    decoded[i] = (Byte)(encoded[i] ^ key[i % 4]);
-                }
-                var data = Encoding.UTF8.GetString(decoded);
-                
-                if (data == "exit") break;
 
-                //data är en beställning - skicka vidare till en el flera anställda
-                if (data.Contains("serviceTypes"))
+                if (length > 0)
                 {
-                    ServiceTypeViewModel order = JsonConvert.DeserializeObject<ServiceTypeViewModel>(data);
-                    Console.WriteLine(order.ServiceTypes.ToString());
-                    Console.WriteLine(order.Regnumber);
-                    ToClient(order.Regnumber);
+                    Byte[] key = new Byte[4];
+                    Array.Copy(bytes, 2, key, 0, key.Length);
+                    byte[] encoded = new Byte[length];
+                    byte[] decoded = new Byte[length];
+                    Array.Copy(bytes, 6, encoded, 0, encoded.Length);
+                    for (int i = 0; i < encoded.Length; i++)
+                    {
+                        decoded[i] = (Byte)(encoded[i] ^ key[i % 4]);
+                    }
+                    var data = Encoding.UTF8.GetString(decoded);
+
+                    if (data == "exit") break;
+
+                    //data är en beställning - skicka vidare till en el flera anställda
+                    if (data.Contains("serviceTypes"))
+                    {
+                        ServiceTypeViewModel order = JsonConvert.DeserializeObject<ServiceTypeViewModel>(data);
+                        Console.WriteLine(order.ServiceTypes.ToString());
+                        Console.WriteLine(order.Regnumber);
+
+                        //till varje anställd: skicka order
+                        foreach (var employee in employees)
+                        {
+                            employee.Client.Send(decoded);
+                        }
+                        //ToClient(order);
+                    }
                 }
-                ToClient(null);
+
+                //skicka data till anställda - använd javascript på den sidan för att fylla i info.
+                //ToClient(null);
             }
             stream.Close();
             client.Close();
+            employees.Remove(client);
+            customers.Remove(client);
+            //ta bort client från listan
         }
 
-        static void ToClient(string input)
+        static void ToClient(ServiceTypeViewModel order)
         {
-            var s = "Inkommen beställning:" + input;
+            var s = string.Format("Inkommen beställning: {0} för bil med regnr {1}", order.ServiceTypes.ToString(), order.Regnumber);
             var message = Encoding.UTF8.GetBytes(s);
             var send = new byte[message.Length + 2];
             send[0] = 0x81;
