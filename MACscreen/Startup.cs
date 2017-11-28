@@ -38,7 +38,7 @@ namespace MACscreen
             }
 
             app.UseStaticFiles();
-
+            app.UseWebSockets();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

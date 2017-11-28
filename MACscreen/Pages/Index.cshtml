@@ -8,10 +8,15 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
+   
         var ws = new WebSocket("ws://127.0.0.1:8000/mac")
-        ws.on("message", function() {
-            $('#regNumber').html(message);
-        })
-    });
+        ws.onopen = function () {
+
+            ws.onmessage = function (message)
+            {
+                document.getElementById("regNumber").innerHTML = JSON.parse(message);
+                console.log(JSON.parse(message));
+            }
+        }
+  
 </script>
