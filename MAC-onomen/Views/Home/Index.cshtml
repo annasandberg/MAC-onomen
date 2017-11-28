@@ -51,7 +51,6 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Skriv in ditt Registreringsnummer</h4>
                 </div>
-                <form>
                     <div class="modal-body">
                         <h5 id="choosenService"></h5>
                         <input asp-for="@Model.ServiceTypes" id="serviceId" class="hidden" value=""/>
@@ -61,7 +60,6 @@
                         <button type="button" class="btn btn-default" data-bind="@Model" id="send">Forsätt</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
                     </div>
-                </form>
             </div>
         </div>
     </div>
@@ -81,7 +79,7 @@
                     serviceTypes: document.getElementById("serviceId").value,
                     regNumber: document.getElementById("regNumber").value
                 };
-
+                $('#regModal').modal('toggle');
                 ws.send(JSON.stringify(message));
             })
         }

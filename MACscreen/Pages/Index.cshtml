@@ -1,0 +1,17 @@
+﻿@page
+@{
+    ViewData["Title"] = "Home page";
+}
+<div class="container">
+    <div>
+        <h1 id="regNumber"></h1>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var ws = new WebSocket("ws://127.0.0.1:8000/mac")
+        ws.on("message", function() {
+            $('#regNumber').html(message);
+        })
+    });
+</script>
