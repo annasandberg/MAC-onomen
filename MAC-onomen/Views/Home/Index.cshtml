@@ -83,6 +83,7 @@
                 };
 
                 ws.send(JSON.stringify(message));
+                ws.close();
             })
         }
     });
