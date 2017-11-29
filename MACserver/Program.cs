@@ -93,7 +93,7 @@ namespace WebSocketServer
 
         static void FromClient()
         {
-
+            
             while (true)
             {
                 var bytes = new Byte[1024];
