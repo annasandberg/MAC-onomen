@@ -1,44 +1,92 @@
-﻿@{
+﻿@model MAC_onomen.Models.ServiceTypeViewModel
+@{
     ViewData["Title"] = "MAC-onomen";
 }
 
 <div class="boxcontainer container">
-    <div class="col-md-12">
-        <div class="col-md-3 box">
-            <img class="img-responsive" src="~/images/car-wash.png" />
-            <h3>Biltvätt</h3>
+    <div class="col-md-12 boxholder">
+        <div class="col-md-3 box" id="0" data-toggle="modal" data-target="#regModal">
+            <img class="img-responsive" src="~/images/car-wash.png"/>
+            <h4>Biltvätt</h4>
         </div>
-        <div class="col-md-3 box">
-            <img class="img-responsive" src="~/images/fuel.png" /> 
-            <h3>Tanka</h3>
+        <div class="col-md-3 box" id="1" data-toggle="modal" data-target="#regModal">
+            <img class="img-responsive" src="~/images/fuel.png" />
+            <h4>Tanka</h4>
         </div>
-        <div class="col-md-3 box">
-            <img class="img-responsive" src="~/images/motor-oil.png" /> 
-            <h3>Fylla på olja</h3>
+        <div class="col-md-3 box" id="2" data-toggle="modal" data-target="#regModal">
+            <img class="img-responsive" src="~/images/motor-oil.png" />
+            <h4>Fylla på olja</h4>
         </div>
-        <div class="col-md-3 box">
-            <img class="img-responsive" src="~/images/light.png" /> 
-            <h3>Byta lampa/lampor</h3>
+        <div class="col-md-3 box" id="3" data-toggle="modal" data-target="#regModal">
+           <img class="img-responsive" src="~/images/light.png" />
+            <h4>Byta lampor</h4>
+        </div>
+    </div>
+    <div class="col-md-12 boxholder">
+        <div class="col-md-3 box" id="4" data-toggle="modal" data-target="#regModal">
+            <img class="img-responsive" src="~/images/tire.png" />
+            <h4>Byta däck</h4>
+        </div>
+        <div class="col-md-3 box" id="5" data-toggle="modal" data-target="#regModal">
+            <img class="img-responsive" src="~/images/washer-fluid.png" />
+            <h4>Spolarvätska</h4>
+        </div>
+        <div class="col-md-3 box" id="6" data-toggle="modal" data-target="#regModal">
+            <img class="img-responsive" src="~/images/wiper.png" />
+           
+            <h4>Vindrutetorkare</h4>
+        </div>
+        <div class="col-md-3 box" id="7" data-toggle="modal" data-target="#regModal">
+            <img class="img-responsive" src="~/images/tire-air.png" />
+            <h4>Lufta däck</h4>
         </div>
 
     </div>
-    <div class="col-md-12">
-        <div class="col-md-3 box">
-            <img class="img-responsive" src="~/images/tire.png" /> 
-            <h3>Byta däck</h3>
-        </div>
-        <div class="col-md-3 box">
-            <img class="img-responsive" src="~/images/washer-fluid.png" />
-            <h3>Fylla på spolarvätska</h3>
-        </div>
-        <div class="col-md-3 box">
-            <img class="img-responsive" src="~/images/wiper.png" /> 
-            <h3>Byte av vindrutetorkare</h3>
-        </div>
-        <div class="col-md-3 box">
-            <img class="img-responsive" src="~/images/tire-air.png" /> 
-            <h3>Lufta däck</h3>
-        </div>
 
+    <div id="regModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Skriv in ditt Registreringsnummer</h4>
+                </div>
+                <form asp-action="Send" asp-controller="send" method="post">
+                    <div class="modal-body">
+                        <h5 id="choosenService"></h5>
+                        <input asp-for="@Model.ServiceTypes" id="serviceId" class="hidden" value=""/>
+                        <input asp-for="@Model.Regnumber" class="form-control" id="regNumber" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default" data-bind="@Model" id="send">Forsätt</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        var ws = new WebSocket("ws://localhost:8000/mac")
+        ws.onopen = function () {
+
+            var btn = document.getElementById("send");
+
+            btn.addEventListener('click', function () {
+                
+                var message = {
+                    serviceTypes: document.getElementById("serviceId").value,
+                    regNumber: document.getElementById("regNumber").value
+                };
+
+                ws.send(JSON.stringify(message));
+                ws.close();
+            })
+        }
+    });
+</script>
+
+ 
