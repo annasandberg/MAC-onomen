@@ -31,20 +31,27 @@ namespace WebSocketServer
             {
                 client = server.AcceptTcpClient();
                 Console.WriteLine("A client connected.");
-                new Thread(() => HandleClient(client)).Start();
+                var childSocketThread = new Task(() => HandleClient(client));
+                childSocketThread.Start();
             }
         }
+        
+    
 
-        private static void HandleClient(object obj)
+        private static void HandleClient(TcpClient obj)
         {
-            var client = (TcpClient)obj;
             string clientIPAddress = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
             var clientPort = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
             //lägg till i en lista?
             employees.Add(client);
             customers.Add(client);
 
-            
+            ReadStream();
+
+        }
+
+        static void ReadStream()
+        {
             stream = client.GetStream();
 
             while (true)
@@ -71,7 +78,7 @@ namespace WebSocketServer
                         ) + Environment.NewLine
                         + Environment.NewLine);
 
-                    stream.Write(response, 0, response.Length); 
+                    stream.Write(response, 0, response.Length);
 
                     //ta emot data från kunder
                     FromClient();
@@ -82,7 +89,6 @@ namespace WebSocketServer
                 }
 
             }
-        
         }
 
         static void FromClient()
@@ -123,6 +129,7 @@ namespace WebSocketServer
                         }
                         //ToClient(order);
                     }
+                    
                 }
 
                 //skicka data till anställda - använd javascript på den sidan för att fylla i info.

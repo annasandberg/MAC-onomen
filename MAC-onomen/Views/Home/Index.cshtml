@@ -81,6 +81,7 @@
                 };
                 $('#regModal').modal('toggle');
                 ws.send(JSON.stringify(message));
+                ws.close();
             })
         }
     });
