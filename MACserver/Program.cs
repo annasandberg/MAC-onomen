@@ -15,8 +15,6 @@ namespace WebSocketServer
 {
     class Program
     {
-        //static NetworkStream stream;
-        //static Task task = new Task(() => FromClient(stream));
         static TcpClient client;
         
         static List<TcpClient> employees = new List<TcpClient>();
@@ -37,14 +35,6 @@ namespace WebSocketServer
                 
             }
         }
-        
-        
-
-        //static void Connect()
-        //{
-            
-        //}
-
         
     }
 

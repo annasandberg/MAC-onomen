@@ -1,0 +1,22 @@
+﻿@page
+@{
+    ViewData["Title"] = "Home page";
+}
+<div class="container">
+    <div>
+        <h1 id="regNumber"></h1>
+    </div>
+</div>
+<script>
+   
+        var ws = new WebSocket("ws://127.0.0.1:8000/mac")
+        ws.onopen = function () {
+
+            ws.onmessage = function (message)
+            {
+                document.getElementById("regNumber").innerHTML = JSON.parse(message);
+                console.log(JSON.parse(message));
+            }
+        }
+  
+</script>
