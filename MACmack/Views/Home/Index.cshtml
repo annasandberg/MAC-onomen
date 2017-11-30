@@ -66,29 +66,22 @@
 
             cell1.innerHTML = regnr;
             cell2.innerHTML = serviceType;
-            cell3.innerHTML = "<button class='statusButton' id=`${regnr}`>Redo!</button>";
-        }
+            cell3.innerHTML = "<button class='statusButton' id='" + regnr + "'>Redo!</button>";
 
-        var buttons = document.getElementsByClassName('statusButton');
-        var buttonArray = [...buttons];
+            //Name buttons
 
-        for (var i = 0; i > buttonArray.length; i++) {
+            var newButton = document.getElementById(regnr);
 
-            buttonArray[i].addEventListener('click', function () {
-
-
-                //Switch status in table
+            newButton.addEventListener('click', function() {
+                //switch status in table
                 var cell = document.getElementById(this.id).parentElement;
 
-                cell.innerHtml = "In progress!";
+                cell.innerHTML = "In progress!";
 
-                //Send status to server
-                var row = cell.parentElement;
-
-                var serviceType = row.cells[2].innerHTML;
-
-                var message = "`$this.id`";
-                ws.send(JSON.stringify(message));
+                //send status to server
+                //var message = this.id.toString();
+                var message = this.id.toString();
+                ws.send(json.stringify(message));
             });
         }
     });
