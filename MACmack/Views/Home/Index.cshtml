@@ -6,34 +6,12 @@
 <div class="boxcontainer container">
     <table id="myTable">
         <tr>
-            <th>Regnr</th>
-            <th>ServiceType</th>
+            <th>Registreringsnummer</th>
+            <th>Servicetyp</th>
             <th>Status</th>
         </tr>
     </table>
 </div>
-
-
-@*<script>
-        $(document).ready(function () {
-            var ws = new WebSocket("ws://127.0.0.1:8000/mac")
-            ws.onopen = function () {
-
-                var btn = document.getElementById("send");
-
-                btn.addEventListener('click', function () {
-
-                    var message = {
-                        serviceTypes: document.getElementById("serviceId").value,
-                        regNumber: document.getElementById("regNumber").value
-                    };
-                    $('#regModal').modal('toggle');
-                    ws.send(JSON.stringify(message));
-                    ws.close();
-                })
-            }
-        });
-    </script>*@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
@@ -76,7 +54,7 @@
                 //switch status in table
                 var cell = document.getElementById(this.id).parentElement;
 
-                cell.innerHTML = "In progress!";
+                cell.innerHTML = "Pågående!!";
 
                 var message = this.id.toString();
 
