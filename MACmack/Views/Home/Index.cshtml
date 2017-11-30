@@ -83,6 +83,10 @@
                 cell.innerHtml = "In progress!";
 
                 //Send status to server
+                var row = cell.parentElement;
+
+                var serviceType = row.cells[2].innerHTML;
+
                 var message = "`$this.id`";
                 ws.send(JSON.stringify(message));
             });
