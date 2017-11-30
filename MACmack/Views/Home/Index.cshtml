@@ -45,11 +45,11 @@
         }
 
         ws.onmessage = function(evt) {
-            alert("onmessage!");
-            var rec = evt.data;
+            //alert("onmessage!");
+            //var rec = evt.data;
 
-            alert("evt : " + rec);
-            console.log(rec);
+            //alert("evt : " + rec);
+            //console.log(rec);
 
             var splitArray = rec.split(',');
 
@@ -78,10 +78,10 @@
 
                 cell.innerHTML = "In progress!";
 
-                //send status to server
-                //var message = this.id.toString();
                 var message = this.id.toString();
-                ws.send(json.stringify(message));
+
+                
+                ws.send(message);
             });
         }
     });
