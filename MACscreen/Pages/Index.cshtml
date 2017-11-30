@@ -1,22 +1,48 @@
-﻿@page
+﻿@model MACmack.Models.ServiceTypeViewModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "MAConomen anställda";
 }
-<div class="container">
-    <div>
-        <h1 id="regNumber"></h1>
-    </div>
+
+<div class="boxcontainer container">
+    <table id="myTable">
+        <tr>
+            <th>Regnr</th>
+            <th>ServiceType</th>
+        </tr>
+    </table>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <script>
    
         var ws = new WebSocket("ws://127.0.0.1:8000/screen")
         ws.onopen = function () {
 
-            ws.onmessage = function (message)
-            {
-                document.getElementById("regNumber").innerHTML = JSON.parse(message);
-                console.log(JSON.parse(message));
-            }
+            var regnr = splitArray[0];
+            var serviceType = splitArray[1];
+
+            var table = document.getElementById("myTable");
+
+            var row = table.insertRow(1);
+
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+
+            cell1.innerHTML = regnr;
+            cell2.innerHTML = serviceType;
         }
-  
+
+        var table = document.getElementById('myTable');
+
+        if (table.rows.count > 10) {
+            var rowToRemove = table.rows.count - 1;
+
+            table.deleteRow(rowToRemove);
+        }
+    });
+
+
+
 </script>
+
