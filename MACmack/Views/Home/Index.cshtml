@@ -58,11 +58,11 @@
 
             var regnr = splitArray[0];
             var serviceType = splitArray[1];
-            var status = "In Progress";
+            var status = "Ny!";
 
             var table = document.getElementById("myTable");
 
-            var row = table.insertRow(0);
+            var row = table.insertRow(1);
 
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
@@ -72,7 +72,7 @@
             cell1.innerHTML = regnr;
             cell2.innerHTML = serviceType;
             cell3.innerHTML = status;
-            cell4.innerHTML = "<button class='statusButton' id=`${regnr}`>Klar!</button>";
+            cell4.innerHTML = "<button class='statusButton' id=`${regnr}`>Redo!</button>";
         }
     })
 
@@ -82,6 +82,8 @@
     for (var i = 0; i > buttonArray.length; i++) {
 
         buttonArray[i].addEventListener('click', function () {
+
+
             //Switch status in table
             //Send status to server
             this.id;
