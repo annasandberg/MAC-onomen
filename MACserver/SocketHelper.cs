@@ -12,7 +12,7 @@ namespace MACserver
 
         public static void ToClient(ServiceTypeViewModel order)
         {
-            var s = string.Format("Inkommen beställning: {0} för bil med regnr {1}", order.ServiceTypes.ToString(), order.Regnumber);
+            var s = string.Format("{0},{1}", order.Regnumber, order.ServiceTypes.ToString());
             var message = Encoding.UTF8.GetBytes(s);
             var send = new byte[message.Length + 2];
             send[0] = 0x81;
