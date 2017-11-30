@@ -10,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace MACserver
 {
-    class MyClient
+    public class MyClient
     {
-        Task task;
         static TcpClient _client;
         string clientType;
       
@@ -20,23 +19,11 @@ namespace MACserver
         {
             _client = client;
             this.clientType = clientType;
-            task = new Task(() => Listen());
-            task.Start();
             Console.WriteLine("A client connected: " + clientType);
             var childSocketTask = new Task(() => HandleClient(client));
-            childSocketTask.Start();
-           
+            childSocketTask.Start();   
         }
 
-        public void Listen()
-        {
-            while (true)
-            {
-         
-            }
-           
-            
-        }
         private static void HandleClient(TcpClient client)
         {
             var stream = client.GetStream();
@@ -68,7 +55,6 @@ namespace MACserver
 
                     stream.Write(response, 0, response.Length);
 
-                    //ta emot data från kunder
                     FromClient(stream);
                 }
                 else
@@ -104,34 +90,21 @@ namespace MACserver
 
                     if (data == "exit") break;
 
-                    //data är en beställning - skicka vidare till en el flera anställda
                     if (data.Contains("serviceTypes"))
                     {
                         ServiceTypeViewModel order = Newtonsoft.Json.JsonConvert.DeserializeObject<ServiceTypeViewModel>(data);
                         Console.WriteLine(order.ServiceTypes.ToString());
                         Console.WriteLine(order.Regnumber);
 
-                        //till varje anställd: skicka order
-                        //foreach (var conn in SocketHelper.connections)
-                        //{
-                        //    conn.Client.Send(decoded);
-                        //}
-
-                        SocketHelper.ToClient(order);
-                      
-                        
+                        SocketHelper.ToClient(order); 
                     }
 
                 }
             }
             stream.Close();
-
             _client.Close();
             SocketHelper.connections.Remove(_client);
         }
-
-       
-
 
     }
 }

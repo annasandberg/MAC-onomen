@@ -9,16 +9,11 @@
     $(document).ready(function () {
         var ws = new WebSocket("ws://127.0.0.1:8000/mac")
         ws.onopen = function () {
-            alert("Onopen!");
 
         }
 
         ws.onmessage = function (evt) {
-            alert("onmessage!");
             var rec = evt.data;
-
-            alert("evt : " + rec);
-            console.log(rec);
             document.getElementById("hello").innerHTML = rec + "<br>";
         }
         })

@@ -12,11 +12,6 @@ namespace MACserver
 
         public static void ToClient(ServiceTypeViewModel order)
         {
-
-            //foreach (var conn in connections)
-            //{
-            //    conn.Client.Send(message);
-            //}
             var s = string.Format("Inkommen beställning: {0} för bil med regnr {1}", order.ServiceTypes.ToString(), order.Regnumber);
             var message = Encoding.UTF8.GetBytes(s);
             var send = new byte[message.Length + 2];
@@ -27,7 +22,6 @@ namespace MACserver
                 send[i + 2] = (byte)message[i];
             }
 
-            //stream.Write(send, 0, send.Length);
             foreach (var conn in connections)
             {
                 conn.Client.Send(send);
