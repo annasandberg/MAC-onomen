@@ -40,7 +40,19 @@ namespace MACserver
                 if (new Regex("^GET").IsMatch(data))
                 {
                     Console.WriteLine("OK");
-                    SocketHelper.connections.Add(client);
+                    if (data.Contains("employee"))
+                    {
+                        SocketHelper.employees.Add(client);
+                    }
+                    if (data.Contains("customer"))
+                    {
+                        SocketHelper.customers.Add(client);
+                    }
+                    if (data.Contains("screen"))
+                    {
+                        SocketHelper.screens.Add(client);
+                    }
+
                     Byte[] response = Encoding.UTF8.GetBytes("HTTP/1.1 101 Switching Protocols" + Environment.NewLine
                         + "Connection: Upgrade" + Environment.NewLine
                         + "Upgrade: websocket" + Environment.NewLine
@@ -55,7 +67,7 @@ namespace MACserver
 
                     stream.Write(response, 0, response.Length);
 
-                    FromClient(stream);
+                    FromClient(stream, data);
                 }
                 else
                 {
@@ -67,7 +79,7 @@ namespace MACserver
             
         }
 
-        static void FromClient(NetworkStream stream)
+        static void FromClient(NetworkStream stream, string input)
         {
             while (true)
             {
@@ -90,20 +102,38 @@ namespace MACserver
 
                     if (data == "exit") break;
 
-                    if (data.Contains("serviceTypes"))
+                                      
+                    if (input.Contains("customer"))
                     {
                         ServiceTypeViewModel order = Newtonsoft.Json.JsonConvert.DeserializeObject<ServiceTypeViewModel>(data);
                         Console.WriteLine(order.ServiceTypes.ToString());
                         Console.WriteLine(order.Regnumber);
 
-                        SocketHelper.ToClient(order); 
+                        SocketHelper.ToEmployees(order); 
+                    }
+                    if (input.Contains("employee"))
+                    {
+                        SocketHelper.ToScreens(data);
                     }
 
                 }
             }
             stream.Close();
             _client.Close();
-            SocketHelper.connections.Remove(_client);
+
+            //if (SocketHelper.customers.Contains(_client))
+            //{
+            //    SocketHelper.customers.Remove(_client);
+            //}
+            //if (SocketHelper.employees.Contains(_client))
+            //{
+            //    SocketHelper.employees.Remove(_client);
+            //}
+            //if (SocketHelper.screens.Contains(_client))
+            //{
+            //    SocketHelper.screens.Remove(_client);
+            //}
+
         }
 
     }
