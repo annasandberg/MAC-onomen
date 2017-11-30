@@ -1,4 +1,4 @@
-﻿using MAC_onomen.Models;
+﻿using MAConomen.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -113,6 +113,7 @@ namespace MACserver
                     }
                     if (input.Contains("employee"))
                     {
+                        Console.WriteLine(data);
                         SocketHelper.ToScreens(data);
                     }
 
