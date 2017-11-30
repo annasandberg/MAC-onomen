@@ -12,15 +12,19 @@
             };
 
             ws.send(JSON.stringify(message));
-            ws.close();
-            $("#regModal").modal("toggle");
+           
+            $("#regNumber").val('');
+               
+           
+
             $("#infoModal").modal("toggle");
+
             setTimeout(function () {
                 $("#infoModal").modal("toggle");
             }, 3000);
+           
         });
-        
-
+       
     };
 
     $(".box").click(function () {
