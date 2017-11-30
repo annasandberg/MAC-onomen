@@ -1,9 +1,10 @@
 ﻿$(document).ready(function () {
 
     var btn = document.getElementById("send");
+    var ws = new WebSocket("ws://127.0.0.1:8000/mac")
 
     btn.addEventListener('click', function () {
-        var ws = new WebSocket("ws://127.0.0.1:8000/mac")
+       
 
         ws.onopen = function () {
             var message = {
