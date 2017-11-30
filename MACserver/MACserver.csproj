@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MAC-onomen\MAC-onomen.csproj" />
+    <ProjectReference Include="..\MAConomen\MAConomen.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MAC_onomen.Models
+namespace MAConomen.Models
 {
     public class ServiceTypeViewModel
     {

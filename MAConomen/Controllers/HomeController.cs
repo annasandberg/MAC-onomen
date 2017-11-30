@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MAC_onomen.Models;
+using MAConomen.Models;
 
-namespace MAC_onomen.Controllers
+namespace MAConomen.Controllers
 {
     public class HomeController : Controller
     {

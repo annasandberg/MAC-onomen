@@ -1,6 +1,6 @@
 using System;
 
-namespace MAC_onomen.Models
+namespace MAConomen.Models
 {
     public class ErrorViewModel
     {
