@@ -15,10 +15,7 @@ namespace WebSocketServer
 {
     class Program
     {
-        static TcpClient client;
-        
-        static List<TcpClient> employees = new List<TcpClient>();
-        
+        static TcpClient client;       
 
         public static void Main()
         {

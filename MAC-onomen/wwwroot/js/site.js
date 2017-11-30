@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
 
 
-    var ws = new WebSocket("ws://127.0.0.1:8000/mac")
+    var ws = new WebSocket("ws://127.0.0.1:8000/customer")
 
     ws.onopen = function () {
         var btn = document.getElementById("send");
