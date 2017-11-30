@@ -6,8 +6,7 @@
 <div class="boxcontainer container">
     <table id="myTable">
         <tr>
-            <th>Regnr</th>
-            <th>ServiceType</th>
+            <th><h1>Regnr</h1></th>
         </tr>
     </table>
 </div>
@@ -31,17 +30,14 @@
             var splitArray = rec.split(',');
 
             var regnr = splitArray[0];
-            var serviceType = splitArray[1];
 
             var table = document.getElementById("myTable");
 
             var row = table.insertRow(1);
 
             var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
 
             cell1.innerHTML = regnr;
-            cell2.innerHTML = serviceType;
         }
 
         var table = document.getElementById('myTable');
