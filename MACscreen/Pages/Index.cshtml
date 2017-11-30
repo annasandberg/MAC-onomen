@@ -1,4 +1,4 @@
-﻿@model MACmack.Models.ServiceTypeViewModel
+﻿@page
 @{
     ViewData["Title"] = "MAConomen anställda";
 }
@@ -16,7 +16,7 @@
 
 <script>
     $(document).ready(function () {
-        var ws = new WebSocket("ws://127.0.0.1:8000/employee");
+        var ws = new WebSocket("ws://127.0.0.1:8000/screeny");
         ws.onopen = function () {
 
         }
