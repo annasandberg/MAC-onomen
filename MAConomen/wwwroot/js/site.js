@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-
+    const regex = /^[A-Z]{3}\d{3}/g;
 
     var ws = new WebSocket("ws://127.0.0.1:8000/customer")
 
@@ -8,21 +8,31 @@
         btn.addEventListener('click', function () {
             var message = {
                 serviceTypes: document.getElementById("serviceId").value,
-                regNumber: document.getElementById("regNumber").value
+                regNumber: document.getElementById("regNumber").value.toUpperCase()
             };
 
-            ws.send(JSON.stringify(message));
-           
-            $("#regNumber").val('');
-               
-           
+            if (regex.test(message.regNumber))
+            {
+                ws.send(JSON.stringify(message));
 
-            $("#infoModal").modal("toggle");
+                $("#regNumber").val('');
 
-            setTimeout(function () {
                 $("#infoModal").modal("toggle");
-            }, 3000);
-           
+
+                setTimeout(function () {
+                    $("#infoModal").modal("toggle");
+                }, 3000);
+            }
+            else
+            {
+                $("#regNumber").val('');
+                $("#validation").html("Felaktigt regnummer, försök igen!");
+                setTimeout(function () {
+                    $("#validation").html("");
+                }, 2000)
+              
+            }
+        
         });
        
     };
@@ -36,5 +46,7 @@
         $("#choosenService").html("Du har valt: " + service)
 
     });
+
+    
 });
 

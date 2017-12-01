@@ -40,3 +40,9 @@
 .boxholder{
     margin-left:63.33px;
 }
+
+#validation{
+    color:red;
+    font-size:26px;
+    
+}
