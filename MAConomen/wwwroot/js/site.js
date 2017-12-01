@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
-    const regex = /^[A-Z]{3}\d{3}/g;
+
+    const regex = /^[A-Z]{3}\d{3}/;
 
     var ws = new WebSocket("ws://127.0.0.1:8000/customer")
 
@@ -10,6 +11,8 @@
                 serviceTypes: document.getElementById("serviceId").value,
                 regNumber: document.getElementById("regNumber").value.toUpperCase()
             };
+
+            console.log(regex.test(message.regNumber));
 
             if (regex.test(message.regNumber))
             {
@@ -22,14 +25,13 @@
                 setTimeout(function () {
                     $("#infoModal").modal("toggle");
                 }, 3000);
-            }
-            else
-            {
+              
+            } else {
                 $("#regNumber").val('');
                 $("#validation").html("Felaktigt regnummer, försök igen!");
                 setTimeout(function () {
                     $("#validation").html("");
-                }, 2000)
+                }, 2000);
               
             }
         
