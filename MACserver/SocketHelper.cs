@@ -26,7 +26,11 @@ namespace MACserver
 
             foreach (var conn in employees)
             {
-                conn.Client.Send(send);
+                if (conn.Client.Connected)
+                {
+                    conn.Client.Send(send);
+                }
+                
             }
         }
 
@@ -44,7 +48,10 @@ namespace MACserver
 
             foreach (var conn in screens)
             {
-                conn.Client.Send(send);
+                if (conn.Client.Connected)
+                {
+                    conn.Client.Send(send);
+                }
             }
         }
     }
