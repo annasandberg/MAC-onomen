@@ -33,7 +33,17 @@ namespace MACserver
                 while (!stream.DataAvailable) ;
                 Byte[] bytes = new Byte[client.Available];
 
-                stream.Read(bytes, 0, bytes.Length);
+                try
+                {
+                    stream.Read(bytes, 0, bytes.Length);
+                }
+                catch (Exception e)
+                {
+
+                    Console.WriteLine("Failed to read from stream");
+                    Console.WriteLine(e.Message);
+                    continue;
+                }
 
                 String data = Encoding.UTF8.GetString(bytes);
 
@@ -65,13 +75,23 @@ namespace MACserver
                         ) + Environment.NewLine
                         + Environment.NewLine);
 
-                    stream.Write(response, 0, response.Length);
+                    try
+                    {
+                        stream.Write(response, 0, response.Length);
+                    }
+                    catch (Exception e)
+                    {
 
+                        Console.WriteLine("Failed to write to stream");
+                        Console.WriteLine(e.Message);
+                        continue;
+                    }
+                    
                     FromClient(stream, data);
                 }
                 else
                 {
-
+                    Console.WriteLine("Failed to connect with client");
                 }
 
             }
@@ -121,19 +141,6 @@ namespace MACserver
             }
             stream.Close();
             _client.Close();
-
-            //if (SocketHelper.customers.Contains(_client))
-            //{
-            //    SocketHelper.customers.Remove(_client);
-            //}
-            //if (SocketHelper.employees.Contains(_client))
-            //{
-            //    SocketHelper.employees.Remove(_client);
-            //}
-            //if (SocketHelper.screens.Contains(_client))
-            //{
-            //    SocketHelper.screens.Remove(_client);
-            //}
 
         }
 
