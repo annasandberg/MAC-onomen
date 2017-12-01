@@ -28,7 +28,7 @@ namespace MACserver
         {
             var stream = client.GetStream();
 
-            while (true)
+            while (client.Connected)
             {
                 while (!stream.DataAvailable) ;
                 Byte[] bytes = new Byte[client.Available];
@@ -42,7 +42,7 @@ namespace MACserver
 
                     Console.WriteLine("Failed to read from stream");
                     Console.WriteLine(e.Message);
-                    continue;
+                    break;
                 }
 
                 String data = Encoding.UTF8.GetString(bytes);
@@ -84,7 +84,7 @@ namespace MACserver
 
                         Console.WriteLine("Failed to write to stream");
                         Console.WriteLine(e.Message);
-                        continue;
+                        break;
                     }
                     
                     FromClient(stream, data);
@@ -104,7 +104,18 @@ namespace MACserver
             while (true)
             {
                 var bytes = new Byte[1024];
-                int rec = stream.Read(bytes, 0, 1024);  //Blocking
+                int rec;
+                try
+                {
+                   rec = stream.Read(bytes, 0, 1024);  //Blocking
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Failed to read from stream");
+                    Console.WriteLine(e.Message);
+                    break;
+                }
+                
                 var length = bytes[1] - 128; //message length
 
                 if (length > 0)
@@ -131,7 +142,7 @@ namespace MACserver
 
                         SocketHelper.ToEmployees(order); 
                     }
-                    if (input.Contains("employee"))
+                    if (input.Contains("employee") && data.Length == 6)
                     {
                         Console.WriteLine(data);
                         SocketHelper.ToScreens(data);
