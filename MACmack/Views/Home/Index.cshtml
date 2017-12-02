@@ -34,33 +34,41 @@
             var regnr = splitArray[0];
             var serviceType = splitArray[1];
 
-            var table = document.getElementById("myTable");
-
-            var row = table.insertRow(1);
-
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-
-            cell1.innerHTML = regnr;
-            cell2.innerHTML = serviceType;
-            cell3.innerHTML = "<button class='statusButton' id='" + regnr + "'>Redo!</button>";
-
-            //Name buttons
-
-            var newButton = document.getElementById(regnr);
-
-            newButton.addEventListener('click', function() {
-                //switch status in table
-                var cell = document.getElementById(this.id).parentElement;
-
+            if (serviceType == undefined) {
+                //hitta knapp med id samma som regnr, sätt till Pågående
+                var cell = document.getElementById(regnr).parentElement;
                 cell.innerHTML = "Pågående!!";
+            }
+            else {
+                var table = document.getElementById("myTable");
 
-                var message = this.id.toString();
+                var row = table.insertRow(1);
 
-                
-                ws.send(message);
-            });
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+
+                cell1.innerHTML = regnr;
+                cell2.innerHTML = serviceType;
+                cell3.innerHTML = "<button class='statusButton' id='" + regnr + "'>Redo!</button>";
+
+                //Name buttons
+
+                var newButton = document.getElementById(regnr);
+
+                newButton.addEventListener('click', function () {
+                    //switch status in table
+                    var cell = document.getElementById(this.id).parentElement;
+
+                    cell.innerHTML = "Pågående!!";
+
+                    var message = this.id.toString();
+
+
+                    ws.send(message);
+                });
+            }
+            
         }
     });
 

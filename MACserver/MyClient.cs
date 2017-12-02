@@ -145,6 +145,7 @@ namespace MACserver
                     if (input.Contains("employee") && data.Length == 6)
                     {
                         Console.WriteLine(data);
+                        SocketHelper.UpdateWaitingList(data);
                         SocketHelper.ToScreens(data);
                     }
 
